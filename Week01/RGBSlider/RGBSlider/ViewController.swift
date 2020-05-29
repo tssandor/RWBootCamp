@@ -20,6 +20,7 @@ class ViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    reset()
     // Do any additional setup after loading the view.
   }
   
@@ -27,6 +28,7 @@ class ViewController: UIViewController {
     if let sliderMoved = self.view.viewWithTag(sender.tag) as? UISlider
     {
       switch sender.tag {
+      // tags 1001, 1002, 1003 are slider1, slider2, slider3
       case 1001:
         label1.text = String(Int(sliderMoved.value.rounded()))
       case 1002:
@@ -37,25 +39,27 @@ class ViewController: UIViewController {
         print("This should never appear, something went wrong. The sender wasn't any of the sliders...")
       }
     }
-    print(sender.tag)
   }
   
   @IBAction func setColor() {
-    print("R: \(slider1.value), G: \(slider2.value), B: \(slider3.value)")
+    let color1 = CGFloat(slider1.value.rounded())/255
+    let color2 = CGFloat(slider2.value.rounded())/255
+    let color3 = CGFloat(slider3.value.rounded())/255
+    let newBgColor = CGColor(srgbRed: color1, green: color2, blue: color3, alpha: 1.0)
+
+    view.backgroundColor = UIColor(cgColor: newBgColor)
+    print("R: \(color1), G: \(color2), B: \(color3)")
   }
 
   @IBAction func reset() {
-    slider1.value = 128.0
-    slider2.value = 128.0
-    slider3.value = 128.0
+    slider1.value = 0.0
+    sliderValueChanged(slider1)
+    slider2.value = 0.0
+    sliderValueChanged(slider2)
+    slider3.value = 0.0
+    sliderValueChanged(slider3)
     colorNameLabel.text = "Mystery color"
+    view.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
   }
-  
-  func updateSliderLabels() {
-    label1.text = String(slider1.value.rounded())
-    label2.text = String(slider2.value.rounded())
-    label3.text = String(slider3.value.rounded())
-  }
-  
 }
 
