@@ -140,12 +140,15 @@
                     </view>
                     <connections>
                         <outlet property="colorNameLabel" destination="k2j-wZ-doO" id="tss-f5-nTa"/>
-                        <outlet property="label1" destination="QbI-gh-83E" id="q3e-5g-P9V"/>
-                        <outlet property="label2" destination="EkU-Ph-eq1" id="Ir8-QH-BgY"/>
-                        <outlet property="label3" destination="cTU-JL-EE2" id="LU7-tu-lxc"/>
                         <outlet property="slider1" destination="5zr-vw-bIR" id="dII-IR-7JR"/>
                         <outlet property="slider2" destination="F7L-eZ-oYC" id="boY-7e-oa9"/>
                         <outlet property="slider3" destination="7Pd-qH-sXb" id="ktE-zR-XV8"/>
+                        <outlet property="sliderNameLabel1" destination="N4y-YZ-cce" id="deF-Hj-cEQ"/>
+                        <outlet property="sliderNameLabel2" destination="AOJ-xf-rZn" id="oUB-Bg-pbO"/>
+                        <outlet property="sliderNameLabel3" destination="qnG-MI-jgM" id="0Lr-tt-CBg"/>
+                        <outlet property="sliderValueLabel1" destination="QbI-gh-83E" id="q3e-5g-P9V"/>
+                        <outlet property="sliderValueLabel2" destination="EkU-Ph-eq1" id="Ir8-QH-BgY"/>
+                        <outlet property="sliderValueLabel3" destination="cTU-JL-EE2" id="LU7-tu-lxc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
