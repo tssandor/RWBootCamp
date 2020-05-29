@@ -62,7 +62,7 @@ class ViewController: UIViewController {
     sliderValueChanged(slider2)
     slider3.value = 0.0
     sliderValueChanged(slider3)
-    colorNameLabel.text = "Mystery color"
+    colorNameLabel.text = "Default white background"
     view.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
   }
   
