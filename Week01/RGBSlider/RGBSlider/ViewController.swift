@@ -21,7 +21,6 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     reset()
-    // Do any additional setup after loading the view.
   }
   
   @IBAction func sliderValueChanged(_ sender: UISlider) {
@@ -36,14 +35,14 @@ class ViewController: UIViewController {
       case 1003:
         label3.text = String(Int(sliderMoved.value.rounded()))
       default:
-        print("This should never appear, something went wrong. The sender wasn't any of the sliders...")
+        print("This should never appear, something went wrong ;]")
       }
     }
   }
   
   @IBAction func setColor() {
     //let message = "Give this terrible color a name!"
-    let alert = UIAlertController(title: "Looks terrible ;)", message: nil, preferredStyle: .alert)
+    let alert = UIAlertController(title: "Looks terrible ;]", message: nil, preferredStyle: .alert)
     alert.addTextField { (textField) in
         textField.placeholder = "Give this terrible color a name!"
     }
@@ -72,11 +71,8 @@ class ViewController: UIViewController {
     let color2 = CGFloat(slider2.value.rounded())/255
     let color3 = CGFloat(slider3.value.rounded())/255
     let newBgColor = CGColor(srgbRed: color1, green: color2, blue: color3, alpha: 1.0)
-    
     colorNameLabel.text = colorName
-
     view.backgroundColor = UIColor(cgColor: newBgColor)
-    print("R: \(color1), G: \(color2), B: \(color3)")
   }
 }
 
