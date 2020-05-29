@@ -42,13 +42,18 @@ class ViewController: UIViewController {
   }
   
   @IBAction func setColor() {
-    let color1 = CGFloat(slider1.value.rounded())/255
-    let color2 = CGFloat(slider2.value.rounded())/255
-    let color3 = CGFloat(slider3.value.rounded())/255
-    let newBgColor = CGColor(srgbRed: color1, green: color2, blue: color3, alpha: 1.0)
-
-    view.backgroundColor = UIColor(cgColor: newBgColor)
-    print("R: \(color1), G: \(color2), B: \(color3)")
+    //let message = "Give this terrible color a name!"
+    let alert = UIAlertController(title: "Looks terrible ;)", message: nil, preferredStyle: .alert)
+    alert.addTextField { (textField) in
+        textField.placeholder = "Give this terrible color a name!"
+    }
+    let action = UIAlertAction(title: "OK", style: .default, handler: {
+      action in
+      let colorName = alert.textFields![0] as UITextField
+      self.changeBgColor(colorName: colorName.text!)
+    })
+    alert.addAction(action)
+    present(alert, animated: true, completion: nil)
   }
 
   @IBAction func reset() {
@@ -60,6 +65,18 @@ class ViewController: UIViewController {
     sliderValueChanged(slider3)
     colorNameLabel.text = "Mystery color"
     view.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
+  }
+  
+  func changeBgColor(colorName: String) {
+    let color1 = CGFloat(slider1.value.rounded())/255
+    let color2 = CGFloat(slider2.value.rounded())/255
+    let color3 = CGFloat(slider3.value.rounded())/255
+    let newBgColor = CGColor(srgbRed: color1, green: color2, blue: color3, alpha: 1.0)
+    
+    colorNameLabel.text = colorName
+
+    view.backgroundColor = UIColor(cgColor: newBgColor)
+    print("R: \(color1), G: \(color2), B: \(color3)")
   }
 }
 
