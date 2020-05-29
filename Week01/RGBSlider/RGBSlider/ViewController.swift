@@ -10,7 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
   
-  var usingLightColorLabels: Bool = false
   var slider1Max: Int = 255
   var slider2Max: Int = 255
   var slider3Max: Int = 255
@@ -51,7 +50,6 @@ class ViewController: UIViewController {
   }
   
   @IBAction func setColor() {
-    //let message = "Give this terrible color a name!"
     let alert = UIAlertController(title: "Looks terrible ;]", message: nil, preferredStyle: .alert)
     alert.addTextField { (textField) in
         textField.placeholder = "Give this terrible color a name!"
@@ -74,22 +72,61 @@ class ViewController: UIViewController {
     sliderValueChanged(slider3)
     colorNameLabel.text = "Default white background"
     view.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
-    areWeInHSBMode = false
-    toggleRGBvsHSB()
   }
   
   func changeBgColor(colorName: String) {
-    let color1 = CGFloat(slider1.value.rounded())/CGFloat(slider1Max)
-    let color2 = CGFloat(slider2.value.rounded())/CGFloat(slider2Max)
-    let color3 = CGFloat(slider3.value.rounded())/CGFloat(slider3Max)
-    let newBgColor = CGColor(srgbRed: color1, green: color2, blue: color3, alpha: 1.0)
-    colorNameLabel.text = colorName
-    view.backgroundColor = UIColor(cgColor: newBgColor)
+    let colorParameter1 = CGFloat(slider1.value.rounded())/CGFloat(slider1Max)
+    let colorParameter2 = CGFloat(slider2.value.rounded())/CGFloat(slider2Max)
+    let colorParameter3 = CGFloat(slider3.value.rounded())/CGFloat(slider3Max)
+    var newBgColor: UIColor
+    if !areWeInHSBMode {
+      newBgColor = UIColor(cgColor: CGColor(srgbRed: colorParameter1, green: colorParameter2, blue: colorParameter3, alpha: 1.0))
+    } else {
+      newBgColor = UIColor(hue: colorParameter1, saturation: colorParameter2, brightness: colorParameter3, alpha: 1.0)
+    }
+    view.backgroundColor = newBgColor
+    
+    // This one space string seems to be needed. If the string is empty the Label disappears and the UISegmentedControl is using autolayout aligned to the label. There's likely a better way to do this :]
+    if colorName == "" {
+      colorNameLabel.text = " "
+    } else {
+      colorNameLabel.text = colorName
+    }
+  }
+  
+  @IBAction func modeChanged(_ sender: UISegmentedControl) {
+    if sender.selectedSegmentIndex == 1 {
+      areWeInHSBMode = true
+    } else {
+      areWeInHSBMode = false
+    }
+    toggleRGBvsHSB()
   }
   
   func toggleRGBvsHSB() {
-    
+    if areWeInHSBMode {
+      slider1Max = 360
+      slider2Max = 100
+      slider3Max = 100
+      slider1.maximumValue = Float(slider1Max)
+      slider2.maximumValue = Float(slider2Max)
+      slider3.maximumValue = Float(slider3Max)
+      sliderNameLabel1.text = "Hue"
+      sliderNameLabel2.text = "Saturation"
+      sliderNameLabel3.text = "Brightness"
+      reset()
+    } else {
+      slider1Max = 255
+      slider2Max = 255
+      slider3Max = 255
+      slider1.maximumValue = Float(slider1Max)
+      slider2.maximumValue = Float(slider2Max)
+      slider3.maximumValue = Float(slider3Max)
+      sliderNameLabel1.text = "Red"
+      sliderNameLabel2.text = "Green"
+      sliderNameLabel3.text = "Blue"
+      reset()
+    }
   }
   
 }
-
