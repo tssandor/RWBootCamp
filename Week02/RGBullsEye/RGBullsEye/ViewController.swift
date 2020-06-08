@@ -38,19 +38,42 @@ class ViewController: UIViewController {
   @IBOutlet weak var roundLabel: UILabel!
   @IBOutlet weak var scoreLabel: UILabel!
   
-  let game = BullsEyeGame()
   var rgb = RGB()
+  var game = BullsEyeGame(score: 0, round: 0, targetColor: RGB(r: 127, g: 127, b: 127), guessColor: RGB(r: 255, g: 255, b: 255))
   
   @IBAction func aSliderMoved(sender: UISlider) {
 
+    // We update the slider label
+    switch sender {
+      case redSlider:
+        redLabel.text = "R " + String(Int(sender.value.rounded()))
+      case greenSlider:
+        greenLabel.text = "G " + String(Int(sender.value.rounded()))
+      case blueSlider:
+        blueLabel.text = "B " + String(Int(sender.value.rounded()))
+      default:
+        print("This should never appear, something went wrong ;]")
+    }
+    
+    // We update the guess color
+    game.guessColor = RGB(r: Int(redSlider.value.rounded()), g: Int(greenSlider.value.rounded()), b: Int(blueSlider.value.rounded()))
+    guessLabel.backgroundColor = UIColor(rgbStruct: game.guessColor)
+    
   }
   
   @IBAction func showAlert(sender: AnyObject) {
-
+    print(game.targetColor)
+    print(game.guessColor)
+    let difference = game.guessColor.difference(target: game.targetColor)
+    print(difference)
   }
   
   @IBAction func startOver(sender: AnyObject) {
-
+    let newTargetColor = game.createNewTargetColor()
+    game.targetColor = newTargetColor
+    game.score = 0
+    game.round = 0
+    targetLabel.backgroundColor = UIColor(rgbStruct: game.targetColor)
   }
   
   func updateView() {
@@ -59,6 +82,7 @@ class ViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    startOver(sender: self)
   }
 }
 

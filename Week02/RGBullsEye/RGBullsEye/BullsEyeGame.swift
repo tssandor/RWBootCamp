@@ -23,5 +23,16 @@
 import Foundation
 
 struct BullsEyeGame {  // might be class?
-
+  var score: Int
+  var round: Int
+  var targetColor: RGB
+  var guessColor: RGB
+  
+  func createNewTargetColor() -> RGB {
+    let r = Int.random(in: 1...255)
+    let g = Int.random(in: 1...255)
+    let b = Int.random(in: 1...255)
+    let newTargetColor = RGB(r: r, g: g, b: b)
+    return newTargetColor
+  }
 }
