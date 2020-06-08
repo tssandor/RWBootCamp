@@ -39,18 +39,22 @@ class ViewController: UIViewController {
   @IBOutlet weak var scoreLabel: UILabel!
   
   var rgb = RGB()
-  var game = BullsEyeGame(score: 0, round: 0, targetColor: RGB(r: 127, g: 127, b: 127), guessColor: RGB(r: 255, g: 255, b: 255))
+  var game = BullsEyeGame(score: 0, round: 1, targetColor: RGB(r: 127, g: 127, b: 127), guessColor: RGB(r: 127, g: 127, b: 127))
   
   @IBAction func aSliderMoved(sender: UISlider) {
-
+    
+    var differenceToTarget = 0
     // We update the slider label
     switch sender {
       case redSlider:
         redLabel.text = "R " + String(Int(sender.value.rounded()))
+        differenceToTarget = abs(game.targetColor.r - game.guessColor.r)
       case greenSlider:
         greenLabel.text = "G " + String(Int(sender.value.rounded()))
+        differenceToTarget = abs(game.targetColor.g - game.guessColor.g)
       case blueSlider:
         blueLabel.text = "B " + String(Int(sender.value.rounded()))
+        differenceToTarget = abs(game.targetColor.b - game.guessColor.b)
       default:
         print("This should never appear, something went wrong ;]")
     }
@@ -59,25 +63,73 @@ class ViewController: UIViewController {
     game.guessColor = RGB(r: Int(redSlider.value.rounded()), g: Int(greenSlider.value.rounded()), b: Int(blueSlider.value.rounded()))
     guessLabel.backgroundColor = UIColor(rgbStruct: game.guessColor)
     
+    // We implement the hint feature
+//    sender.minimumTrackTintColor = UIColor.blue.withAlphaComponent(CGFloat(differenceToTarget)/100.0)
+    updateHintOnSliders(onSlider: sender, withDifference: Float(differenceToTarget))
+    
   }
   
   @IBAction func showAlert(sender: AnyObject) {
-    print(game.targetColor)
-    print(game.guessColor)
+  
+    // Determine and update score
     let difference = game.guessColor.difference(target: game.targetColor)
-    print(difference)
+    let scoreInThisRound = game.calculateScore(withDifference: difference)
+    game.score = game.score + scoreInThisRound
+        
+    // Compose alert message
+    var title = "Round \(game.round):"
+    if scoreInThisRound == 1000 {
+      title = title + " THAT'S A BULL'S EYE!"
+    }
+
+    // Update round
+    game.round += 1
+     
+    // Show alert
+    let message = "You scored \(scoreInThisRound) points"
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    let action = UIAlertAction(title: "OK", style: .default, handler: {
+      action in
+      self.updateLabels()
+    })
+    alert.addAction(action)
+    present(alert, animated: true, completion: nil)
   }
   
   @IBAction func startOver(sender: AnyObject) {
-    let newTargetColor = game.createNewTargetColor()
-    game.targetColor = newTargetColor
-    game.score = 0
-    game.round = 0
+    
+    // We generate a new target color
+    game.targetColor = game.createNewTargetColor()
     targetLabel.backgroundColor = UIColor(rgbStruct: game.targetColor)
+    // This is not needed, but helpful if you want a bull's eye ;]
+    print(game.targetColor)
+    
+    // Reset the sliders and the guess color bg
+    game.guessColor = RGB(r: 127, g: 127, b: 127)
+    redSlider.value = Float(game.guessColor.r)
+    greenSlider.value = Float(game.guessColor.g)
+    blueSlider.value = Float(game.guessColor.b)
+    updateHintOnSliders(onSlider: redSlider, withDifference: Float(abs(game.targetColor.r - game.guessColor.r)))
+    updateHintOnSliders(onSlider: greenSlider, withDifference: Float(abs(game.targetColor.g - game.guessColor.g)))
+    updateHintOnSliders(onSlider: blueSlider, withDifference: Float(abs(game.targetColor.b - game.guessColor.b)))
+    redLabel.text = "R 127"
+    greenLabel.text = "G 127"
+    blueLabel.text = "B 127"
+    guessLabel.backgroundColor = UIColor(rgbStruct: game.guessColor)
+    
+    // Reset the round & score
+    game.score = 0
+    game.round = 1
+    updateLabels()
   }
   
-  func updateView() {
-
+  func updateLabels() {
+    scoreLabel.text = "Score: " + String(game.score)
+    roundLabel.text = "Round: " + String(game.round)
+  }
+  
+  func updateHintOnSliders(onSlider: UISlider, withDifference: Float) {
+    onSlider.minimumTrackTintColor = UIColor.blue.withAlphaComponent(CGFloat(withDifference)/100.0)
   }
   
   override func viewDidLoad() {

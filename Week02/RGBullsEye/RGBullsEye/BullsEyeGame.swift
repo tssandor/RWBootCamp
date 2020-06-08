@@ -35,4 +35,13 @@ struct BullsEyeGame {  // might be class?
     let newTargetColor = RGB(r: r, g: g, b: b)
     return newTargetColor
   }
+  
+  func calculateScore(withDifference difference: Double) -> Int {
+    var score = Int((100 - difference * 100).rounded())
+    if score == 100 {
+      // BULL'S EYE
+      score = 1000
+    }
+    return score
+  }
 }
