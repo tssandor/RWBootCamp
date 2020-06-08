@@ -45,11 +45,11 @@ class ViewController: UIViewController {
   
   func startNewRound() {
     currentGame = BullsEyeGame(currentValue: 50, targetValue: Int.random(in: 1...100), score: currentGame.score, round: currentGame.round + 1)
-    slider.value = Float(currentGame.currentValue)
-    updateLabels()
+    updateView()
   }
   
-  func updateLabels() {
+  func updateView() {
+    slider.value = Float(currentGame.currentValue)
     targetLabel.text = String(currentGame.targetValue)
     scoreLabel.text = String(currentGame.score)
     roundLabel.text = String(currentGame.round)
