@@ -38,3 +38,7 @@ struct CryptoCurrency: Codable {
   var currentValue: Double
   var previousValue: Double
 }
+
+enum Errors: String {
+  case cantUnwrapCryptodata = "Couldn't unwrap cryptodata, data source seems to be broken :["
+}

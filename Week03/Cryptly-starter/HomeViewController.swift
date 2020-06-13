@@ -52,8 +52,6 @@ class HomeViewController: UIViewController{
     setView1Data()
     setView2Data()
     setView3Data()
-    
-    print(cryptodata)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -98,6 +96,20 @@ class HomeViewController: UIViewController{
   }
   
   func setView1Data() {
+    var view1LabelToSet: String = ""
+    if let unwrappedCryptoData = cryptodata {
+      unwrappedCryptoData.forEach {
+        // This `if` is needed so we don't start the label with ", " -- not very elegant, should be a better solution.
+        if view1LabelToSet != "" {
+          view1LabelToSet = view1LabelToSet + ", " + $0.name
+        } else {
+          view1LabelToSet = $0.name
+        }
+      }
+      view1TextLabel.text = view1LabelToSet
+    } else {
+      view1TextLabel.text = "This is an error message :] It means I couldn't unwrap cryptodata"
+    }
   }
   
   func setView2Data() {
@@ -107,16 +119,11 @@ class HomeViewController: UIViewController{
         asset.currentValue > asset.previousValue
       }
       assetsWhereValueIncreased.forEach {
-        // This `if` is needed so we don't start the label with ", " -- not very elegant, should be a better solution.
-        if view2LabelToSet != "" {
-          view2LabelToSet = view2LabelToSet + ", " + $0.name
-        } else {
-          view2LabelToSet = $0.name
-        }
+        view2LabelToSet = view2LabelToSet + ", " + $0.name
       }
-      view2TextLabel.text = view2LabelToSet
+      view2TextLabel.text = cutTheComma(view2LabelToSet)
     } else {
-      view2TextLabel.text = "This is an error message :] It means I couldn't unwrap cryptodata"
+      view2TextLabel.text = Errors.cantUnwrapCryptodata.rawValue
     }
     
   }
@@ -125,20 +132,23 @@ class HomeViewController: UIViewController{
     // Terrible code repetition, needs to be refactored
     var view3LabelToSet: String = ""
     if let unwrappedCryptoData = cryptodata {
-      let assetsWhereValueIncreased = unwrappedCryptoData.filter { asset in
+      let assetsWhereValueDecreased = unwrappedCryptoData.filter { asset in
         asset.currentValue < asset.previousValue
       }
-      assetsWhereValueIncreased.forEach {
-        // This `if` is needed so we don't start the label with ", " -- not very elegant, should be a better solution.
-        if view3LabelToSet != "" {
-          view3LabelToSet = view3LabelToSet + ", " + $0.name
-        } else {
-          view3LabelToSet = $0.name
-        }
+      assetsWhereValueDecreased.forEach {
+        view3LabelToSet = view3LabelToSet + ", " + $0.name
       }
-      view3TextLabel.text = view3LabelToSet
+      view3TextLabel.text = cutTheComma(view3LabelToSet)
     } else {
-      view2TextLabel.text = "This is an error message :] It means I couldn't unwrap cryptodata"
+      view3TextLabel.text = Errors.cantUnwrapCryptodata.rawValue
+    }
+  }
+  
+  func cutTheComma(_ input: String) -> String {
+    if input.hasPrefix(", ") {
+      return String(input.suffix(input.count - 2))
+    } else {
+      return input
     }
   }
   
