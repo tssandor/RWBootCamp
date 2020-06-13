@@ -32,8 +32,24 @@
 
 import UIKit
 
-class HomeViewController: UIViewController{
-
+class HomeViewController: UIViewController, Themable{
+  
+  func registerForTheme() {
+    NotificationCenter.default.addObserver(self, selector: #selector(themeChanged), name: Notification.Name.init("themeChanged"), object: nil)
+  }
+  
+  func unregisterForTheme() {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
+  @objc func themeChanged() {
+    if themeSwitch.isOn {
+      print("Is on")
+    } else {
+      print("Is off")
+    }
+  }
+  
   @IBOutlet weak var view1: UIView!
   @IBOutlet weak var view2: UIView!
   @IBOutlet weak var view3: UIView!
@@ -55,10 +71,12 @@ class HomeViewController: UIViewController{
   }
   
   override func viewWillAppear(_ animated: Bool) {
+    registerForTheme()
     super.viewWillAppear(animated)
   }
   
   override func viewWillDisappear(_ animated: Bool) {
+    unregisterForTheme()
     super.viewWillDisappear(animated)
   }
 
@@ -108,5 +126,7 @@ class HomeViewController: UIViewController{
   }
     
   @IBAction func switchPressed(_ sender: Any) {
+    themeChanged()
   }
+  
 }
