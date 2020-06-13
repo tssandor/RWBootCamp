@@ -122,6 +122,24 @@ class HomeViewController: UIViewController{
   }
   
   func setView3Data() {
+    // Terrible code repetition, needs to be refactored
+    var view3LabelToSet: String = ""
+    if let unwrappedCryptoData = cryptodata {
+      let assetsWhereValueIncreased = unwrappedCryptoData.filter { asset in
+        asset.currentValue < asset.previousValue
+      }
+      assetsWhereValueIncreased.forEach {
+        // This `if` is needed so we don't start the label with ", " -- not very elegant, should be a better solution.
+        if view3LabelToSet != "" {
+          view3LabelToSet = view3LabelToSet + ", " + $0.name
+        } else {
+          view3LabelToSet = $0.name
+        }
+      }
+      view3TextLabel.text = view3LabelToSet
+    } else {
+      view2TextLabel.text = "This is an error message :] It means I couldn't unwrap cryptodata"
+    }
   }
   
   @IBAction func switchPressed(_ sender: Any) {
