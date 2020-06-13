@@ -99,16 +99,11 @@ class HomeViewController: UIViewController{
     var view1LabelToSet: String = ""
     if let unwrappedCryptoData = cryptodata {
       unwrappedCryptoData.forEach {
-        // This `if` is needed so we don't start the label with ", " -- not very elegant, should be a better solution.
-        if view1LabelToSet != "" {
-          view1LabelToSet = view1LabelToSet + ", " + $0.name
-        } else {
-          view1LabelToSet = $0.name
-        }
+        view1LabelToSet = view1LabelToSet + ", " + $0.name
       }
-      view1TextLabel.text = view1LabelToSet
+      view1TextLabel.text = cutTheComma(view1LabelToSet)
     } else {
-      view1TextLabel.text = "This is an error message :] It means I couldn't unwrap cryptodata"
+      view1TextLabel.text = Errors.cantUnwrapCryptodata.rawValue
     }
   }
   
@@ -143,15 +138,7 @@ class HomeViewController: UIViewController{
       view3TextLabel.text = Errors.cantUnwrapCryptodata.rawValue
     }
   }
-  
-  func cutTheComma(_ input: String) -> String {
-    if input.hasPrefix(", ") {
-      return String(input.suffix(input.count - 2))
-    } else {
-      return input
-    }
-  }
-  
+    
   @IBAction func switchPressed(_ sender: Any) {
   }
 }
