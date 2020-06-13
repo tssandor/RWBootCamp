@@ -42,3 +42,9 @@ struct CryptoCurrency: Codable {
 enum Errors: String {
   case cantUnwrapCryptodata = "Couldn't unwrap cryptodata, data source seems to be broken :["
 }
+
+enum FilterLogic: String {
+  case increased
+  case decreased
+  case allAssets
+}

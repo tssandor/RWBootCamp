@@ -96,23 +96,15 @@ class HomeViewController: UIViewController{
   }
   
   func setView1Data() {
-    var view1LabelToSet: String = ""
-    if let unwrappedCryptoData = cryptodata {
-      unwrappedCryptoData.forEach {
-        view1LabelToSet = view1LabelToSet + ", " + $0.name
-      }
-      view1TextLabel.text = cutTheComma(view1LabelToSet)
-    } else {
-      view1TextLabel.text = Errors.cantUnwrapCryptodata.rawValue
-    }
+    view1TextLabel.text = getTheListOfCurrencies(filterLogic: .allAssets, outOfTheseCurrencies: cryptodata)
   }
   
   func setView2Data() {
-    view2TextLabel.text = getTheListOfCurrencies(whichHaveIncreased: true, outOfTheseCurrencies: cryptodata)
+    view2TextLabel.text = getTheListOfCurrencies(filterLogic: .increased, outOfTheseCurrencies: cryptodata)
   }
   
   func setView3Data() {
-    view3TextLabel.text = getTheListOfCurrencies(whichHaveIncreased: false, outOfTheseCurrencies: cryptodata)
+    view3TextLabel.text = getTheListOfCurrencies(filterLogic: .decreased, outOfTheseCurrencies: cryptodata)
   }
     
   @IBAction func switchPressed(_ sender: Any) {

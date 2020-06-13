@@ -30,16 +30,16 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-/*
- 
- This is ModelView.swift
- 
- I tried to branch out the functions not immediately connected to the View, in the
- name of the MVVM design pattern :]
- 
- */
-
 import Foundation
+
+/*
+
+This is ModelView.swift
+
+I tried to branch out the functions not immediately connected to the View, in the
+name of the MVVM design pattern :]
+
+*/
 
 func cutTheComma(_ input: String) -> String {
   if input.hasPrefix(", ") {
@@ -49,22 +49,33 @@ func cutTheComma(_ input: String) -> String {
   }
 }
 
-func getTheListOfCurrencies(whichHaveIncreased: Bool, outOfTheseCurrencies cryptodata: [CryptoCurrency]?) -> String {
+func getTheListOfCurrencies(filterLogic: FilterLogic, outOfTheseCurrencies cryptodata: [CryptoCurrency]?) -> String {
   var labelToSet: String = ""
   if let unwrappedCryptoData = cryptodata {
+    // We use a filter closure to get a new array of assets based on the filter logic
+    // We return:
+    // - The name of assets which have increased in price OR
+    // - The name of assets which have decreased in price OR
+    // - All asset names
+    // It is built with a switch statement and an enum to make the code more readable
     let conformingAssets = unwrappedCryptoData.filter { asset in
-      if whichHaveIncreased {
+      switch filterLogic {
+      case FilterLogic.increased:
         return asset.currentValue > asset.previousValue
-      } else {
+      case FilterLogic.decreased:
         return asset.currentValue < asset.previousValue
+      case FilterLogic.allAssets:
+        return true
       }
-      
     }
+    // We prepare the return string (a comma separated list of all assets conforming
+    // to the filter logic
     conformingAssets.forEach {
       labelToSet = labelToSet + ", " + $0.name
     }
     return cutTheComma(labelToSet)
   } else {
+    // Oops, couldn't unwrap cryptodata!
     return Errors.cantUnwrapCryptodata.rawValue
   }
 }
