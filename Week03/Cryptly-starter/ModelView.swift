@@ -48,3 +48,23 @@ func cutTheComma(_ input: String) -> String {
     return input
   }
 }
+
+func getTheListOfCurrencies(whichHaveIncreased: Bool, outOfTheseCurrencies cryptodata: [CryptoCurrency]?) -> String {
+  var labelToSet: String = ""
+  if let unwrappedCryptoData = cryptodata {
+    let conformingAssets = unwrappedCryptoData.filter { asset in
+      if whichHaveIncreased {
+        return asset.currentValue > asset.previousValue
+      } else {
+        return asset.currentValue < asset.previousValue
+      }
+      
+    }
+    conformingAssets.forEach {
+      labelToSet = labelToSet + ", " + $0.name
+    }
+    return cutTheComma(labelToSet)
+  } else {
+    return Errors.cantUnwrapCryptodata.rawValue
+  }
+}
