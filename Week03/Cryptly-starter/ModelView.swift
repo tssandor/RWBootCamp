@@ -72,6 +72,9 @@ func getTheListOfCurrencies(filterLogic: FilterLogic, outOfTheseCurrencies crypt
     // to the filter logic
     conformingAssets.forEach {
       labelToSet = labelToSet + ", " + $0.name
+      // This print is just printing out if a currency is rising or falling
+      // and by how much. Filtering and displaying this data is not implemented.
+      if filterLogic == FilterLogic.allAssets { print("\($0.trend) \($0.valueRise)") }
     }
     return cutTheComma(labelToSet)
   } else {

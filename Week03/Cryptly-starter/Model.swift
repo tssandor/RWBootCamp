@@ -37,6 +37,15 @@ struct CryptoCurrency: Codable {
   var symbol: String
   var currentValue: Double
   var previousValue: Double
+  // I added trend and valueRise and they work
+  // But I didn't have the time to add the separate view for them.
+  // See comment in ModelView.swift, row 75
+  var trend: Trend {
+    currentValue > previousValue ? Trend.rising : Trend.falling
+  }
+  var valueRise: Float {
+    Float(currentValue - previousValue)
+  }
 }
 
 enum Errors: String {
@@ -47,4 +56,9 @@ enum FilterLogic: String {
   case increased
   case decreased
   case allAssets
+}
+
+enum Trend: Int, Codable {
+  case rising
+  case falling
 }
