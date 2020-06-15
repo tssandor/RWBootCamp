@@ -40,11 +40,10 @@ protocol Theme {
   var widgetBackgroundColor: UIColor { get }
 }
 
-protocol Themable {
+protocol Themeable {
   func registerForTheme()
   func unregisterForTheme()
   func themeChanged()
-
 }
 
 class LightTheme: Theme {

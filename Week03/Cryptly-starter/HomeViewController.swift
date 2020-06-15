@@ -32,22 +32,28 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, Themable{
+class HomeViewController: UIViewController, Themeable {
   
   func registerForTheme() {
-    NotificationCenter.default.addObserver(self, selector: #selector(themeChanged), name: Notification.Name.init("themeChanged"), object: nil)
-  }
-  
+      NotificationCenter.default.addObserver(self, selector: #selector(themeChanged), name: Notification.Name.init("themeChanged"), object: nil)
+    }
+
   func unregisterForTheme() {
     NotificationCenter.default.removeObserver(self)
   }
   
   @objc func themeChanged() {
-    if themeSwitch.isOn {
-      print("Is on")
-    } else {
-      print("Is off")
-    }
+    view.backgroundColor = ThemeManager.shared.currentTheme?.backgroundColor
+    view1.backgroundColor = ThemeManager.shared.currentTheme?.widgetBackgroundColor
+    view2.backgroundColor = ThemeManager.shared.currentTheme?.widgetBackgroundColor
+    view3.backgroundColor = ThemeManager.shared.currentTheme?.widgetBackgroundColor
+    view1.layer.borderColor = ThemeManager.shared.currentTheme?.borderColor.cgColor
+    view2.layer.borderColor = ThemeManager.shared.currentTheme?.borderColor.cgColor
+    view3.layer.borderColor = ThemeManager.shared.currentTheme?.borderColor.cgColor
+    view1TextLabel.textColor = ThemeManager.shared.currentTheme?.textColor
+    view2TextLabel.textColor = ThemeManager.shared.currentTheme?.textColor
+    view3TextLabel.textColor = ThemeManager.shared.currentTheme?.textColor
+    headingLabel.textColor = ThemeManager.shared.currentTheme?.textColor
   }
   
   @IBOutlet weak var view1: UIView!
@@ -72,6 +78,7 @@ class HomeViewController: UIViewController, Themable{
   
   override func viewWillAppear(_ animated: Bool) {
     registerForTheme()
+    ThemeManager.shared.set(theme: LightTheme())
     super.viewWillAppear(animated)
   }
   
@@ -126,7 +133,11 @@ class HomeViewController: UIViewController, Themable{
   }
     
   @IBAction func switchPressed(_ sender: Any) {
-    themeChanged()
+    if themeSwitch.isOn {
+      ThemeManager.shared.set(theme: DarkTheme())
+    } else {
+      ThemeManager.shared.set(theme: LightTheme())
+    }
   }
   
 }
