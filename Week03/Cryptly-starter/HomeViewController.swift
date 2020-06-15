@@ -32,6 +32,8 @@
 
 import UIKit
 
+// So I decided to simply make HomeViewController directly implement the Themeable protocol.
+// Not sure this solution is acceptable but made sense to me!
 class HomeViewController: UIViewController, Themeable {
   
   func registerForTheme() {
@@ -87,31 +89,20 @@ class HomeViewController: UIViewController, Themeable {
     super.viewWillDisappear(animated)
   }
 
+  func setupASingleView(thisView: UIView) {
+    thisView.backgroundColor = .systemGray6
+    thisView.layer.borderColor = UIColor.lightGray.cgColor
+    thisView.layer.borderWidth = 1.0
+    thisView.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
+    thisView.layer.shadowOffset = CGSize(width: 0, height: 2)
+    thisView.layer.shadowRadius = 4
+    thisView.layer.shadowOpacity = 0.8
+  }
+  
   func setupViews() {
-      
-    view1.backgroundColor = .systemGray6
-    view1.layer.borderColor = UIColor.lightGray.cgColor
-    view1.layer.borderWidth = 1.0
-    view1.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
-    view1.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view1.layer.shadowRadius = 4
-    view1.layer.shadowOpacity = 0.8
-    
-    view2.backgroundColor = .systemGray6
-    view2.layer.borderColor = UIColor.lightGray.cgColor
-    view2.layer.borderWidth = 1.0
-    view2.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
-    view2.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view2.layer.shadowRadius = 4
-    view2.layer.shadowOpacity = 0.8
-    
-    view3.backgroundColor = .systemGray6
-    view3.layer.borderColor = UIColor.lightGray.cgColor
-    view3.layer.borderWidth = 1.0
-    view3.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
-    view3.layer.shadowOffset = CGSize(width: 0, height: 2)
-    view3.layer.shadowRadius = 4
-    view3.layer.shadowOpacity = 0.8
+    setupASingleView(thisView: view1)
+    setupASingleView(thisView: view2)
+    setupASingleView(thisView: view3)
   }
   
   func setupLabels() {
