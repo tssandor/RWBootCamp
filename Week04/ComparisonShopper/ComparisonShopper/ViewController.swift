@@ -54,7 +54,6 @@ class ViewController: UIViewController {
       // The problem is we are force-unwrapping the properties and they can be nil (in fact the address is now nil)
       // So we need to handle this case. I can steal the code snippet from setUpRightSideUI, but I don't like the look of it :]
       // It handles the case where house2 is nil but not directly the case when a proprerty is nil.
-      // It won't crash because we are assigning an optional to an optional, but maybe there's a better solution.
       // Let's make it prettier with nil coalescing!
       // I'll just comment out this old code here as a memento.
 //        titleLabelLeft.text = house1!.address!
