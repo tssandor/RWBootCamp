@@ -12,10 +12,6 @@ class BirdieViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
   @IBOutlet weak var tableview: UITableView!
   
-//  @IBOutlet weak var username: UILabel!
-//  @IBOutlet weak var postDate: UILabel!
-//  @IBOutlet weak var postText: UILabel!
-  
   override func viewDidLoad() {
       super.viewDidLoad()
       setUpTableView()
@@ -25,37 +21,52 @@ class BirdieViewController: UIViewController, UITableViewDelegate, UITableViewDa
     tableview.delegate = self
     tableview.dataSource = self
     MediaPostsHandler.shared.getPosts()
-    // Set delegates, register custom cells, set up datasource, etc.
   }
 
   @IBAction func didPressCreateTextPostButton(_ sender: Any) {
-
+    let alert = UIAlertController(title: "Add text post", message: nil, preferredStyle: .alert)
+    alert.addTextField { (textField) in
+        textField.placeholder = "Username"
+    }
+    alert.addTextField { (textField) in
+        textField.placeholder = "Post"
+    }
+    let action = UIAlertAction(title: "Add", style: .default, handler: {
+      action in
+        self.insertNewPost(TextPost(textBody: alert.textFields![1].text!, userName: alert.textFields![0].text!, timestamp: Date()))
+    })
+    alert.addAction(action)
+    present(alert, animated: true, completion: nil)
   }
 
   @IBAction func didPressCreateImagePostButton(_ sender: Any) {
 
   }
 
+  func insertNewPost(_ newPost: MediaPost) {
+    MediaPostsHandler.shared.addTextPost(textPost: newPost as! TextPost)
+    let indexPath = IndexPath(row: MediaPostsHandler.shared.mediaPosts.count - 1, section: 0)
+    self.tableview.insertRows(at: [indexPath], with: .automatic)
+    self.tableview.reloadData()
+  }
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    let x = MediaPostsHandler.shared.mediaPosts.count
-    return x
+    return MediaPostsHandler.shared.mediaPosts.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
+    // Need to initialize it as "something"
     var cell = tableView.dequeueReusableCell(withIdentifier: "TextPostCell", for: indexPath)
-    var itsATextPost = true
     
     // I decided to make this a function to make sure currentPost is available outside the if scope.
-    // This results in cleaner code, as we don't need set up labels inside the if statements.
+    // This results in cleaner code, as we don't need set up labels inside the "if TextPost else ImagePost" statements.
+    // This is bascially the MVVM logic, although I did not put it into a separate file
     let currentPost = queryDataForCurrentCell(atIndex: indexPath.row)
 
     if currentPost is TextPost {
       cell = tableView.dequeueReusableCell(withIdentifier: "TextPostCell", for: indexPath)
-      itsATextPost = true
     } else if currentPost is ImagePost {
       cell = tableView.dequeueReusableCell(withIdentifier: "ImagePostCell", for: indexPath)
-      itsATextPost = false
     }
     
     print(currentPost)
@@ -63,10 +74,16 @@ class BirdieViewController: UIViewController, UITableViewDelegate, UITableViewDa
     if let username = cell.viewWithTag(1001) as? UILabel {
       username.text = currentPost.userName
     }
-    if let posttext = cell.viewWithTag(1003) as? UILabel {
-      posttext.text = currentPost.textBody!
+    if let postdate = cell.viewWithTag(1002) as? UILabel {
+      let dateFormatter = DateFormatter()
+      let date = currentPost.timestamp
+      dateFormatter.dateFormat = "dd MMM, HH:mm"
+      postdate.text = dateFormatter.string(from: date)
     }
-    if !itsATextPost {
+    if let posttext = cell.viewWithTag(1003) as? UILabel {
+      posttext.text = currentPost.textBody ?? ""
+    }
+    if currentPost is ImagePost {
       let currentImagePost = currentPost as? ImagePost
       if let postImage = cell.viewWithTag(2001) as? UIImageView {
         postImage.image = currentImagePost?.image
