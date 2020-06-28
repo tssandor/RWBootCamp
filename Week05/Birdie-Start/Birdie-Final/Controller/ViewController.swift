@@ -8,9 +8,10 @@
 
 import UIKit
 
-class BirdieViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class BirdieViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
   @IBOutlet weak var tableview: UITableView!
+  var imagePostImage: UIImage!
   
   override func viewDidLoad() {
       super.viewDidLoad()
@@ -24,6 +25,17 @@ class BirdieViewController: UIViewController, UITableViewDelegate, UITableViewDa
   }
 
   @IBAction func didPressCreateTextPostButton(_ sender: Any) {
+    getPostDataFromUser(isThisAnImagePost: false)
+  }
+
+  @IBAction func didPressCreateImagePostButton(_ sender: Any) {
+    let picker = UIImagePickerController()
+    picker.allowsEditing = true
+    picker.delegate = self
+    present(picker, animated: true)
+  }
+  
+  func getPostDataFromUser(isThisAnImagePost: Bool) {
     let alert = UIAlertController(title: "Add text post", message: nil, preferredStyle: .alert)
     alert.addTextField { (textField) in
         textField.placeholder = "Username"
@@ -33,21 +45,32 @@ class BirdieViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     let action = UIAlertAction(title: "Add", style: .default, handler: {
       action in
+      if isThisAnImagePost {
+        self.insertNewPost(ImagePost(textBody: alert.textFields![1].text!, userName: alert.textFields![0].text!, timestamp: Date(), image: self.imagePostImage))
+      } else {
         self.insertNewPost(TextPost(textBody: alert.textFields![1].text!, userName: alert.textFields![0].text!, timestamp: Date()))
+      }
     })
     alert.addAction(action)
     present(alert, animated: true, completion: nil)
   }
-
-  @IBAction func didPressCreateImagePostButton(_ sender: Any) {
-
-  }
-
+  
   func insertNewPost(_ newPost: MediaPost) {
-    MediaPostsHandler.shared.addTextPost(textPost: newPost as! TextPost)
+    if newPost is TextPost {
+      MediaPostsHandler.shared.addTextPost(textPost: newPost as! TextPost)
+    } else {
+      MediaPostsHandler.shared.addImagePost(imagePost: newPost as! ImagePost)
+    }
     let indexPath = IndexPath(row: MediaPostsHandler.shared.mediaPosts.count - 1, section: 0)
     self.tableview.insertRows(at: [indexPath], with: .automatic)
     self.tableview.reloadData()
+  }
+  
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    guard let image = info[.editedImage] as? UIImage else { return }
+    dismiss(animated: true)
+    imagePostImage = image
+    getPostDataFromUser(isThisAnImagePost: true)
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -68,8 +91,6 @@ class BirdieViewController: UIViewController, UITableViewDelegate, UITableViewDa
     } else if currentPost is ImagePost {
       cell = tableView.dequeueReusableCell(withIdentifier: "ImagePostCell", for: indexPath)
     }
-    
-    print(currentPost)
 
     if let username = cell.viewWithTag(1001) as? UILabel {
       username.text = currentPost.userName
@@ -99,10 +120,11 @@ class BirdieViewController: UIViewController, UITableViewDelegate, UITableViewDa
     } else if let post = MediaPostsHandler.shared.mediaPosts[atIndex] as? ImagePost {
       return post
     }
-    // This should never execute
+    // This should never execute.
+    // Also, question! Is there a better way to handle returns in this case, where both return cases are in an if statement,
+    // so if I don't add a default here (which will never execute), Xcode complains?
     return MediaPostsHandler.shared.mediaPosts[0]
   }
-
   
 }
 
