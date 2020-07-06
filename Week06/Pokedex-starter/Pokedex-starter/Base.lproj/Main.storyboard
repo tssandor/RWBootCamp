@@ -99,28 +99,38 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PokemonCell" id="Ni0-Ye-pY4" customClass="PokemonCell" customModule="Pokedex_starter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="34" height="128"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="CfA-bc-588" customClass="PokemonCell" customModule="Pokedex_starter" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="34" height="128"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SVe-ze-XDi">
+                                                    <rect key="frame" x="10" y="10" width="108" height="90"/>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j2x-Uj-Ugu">
-                                                    <rect key="frame" x="0.0" y="109" width="34" height="19"/>
-                                                    <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="16"/>
+                                                    <rect key="frame" x="0.0" y="110" width="128" height="18"/>
+                                                    <color key="backgroundColor" red="1" green="0.34509803919999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="15"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="SVe-ze-XDi" firstAttribute="leading" secondItem="CfA-bc-588" secondAttribute="leading" constant="10" id="I9K-U7-5tO"/>
                                                 <constraint firstItem="j2x-Uj-Ugu" firstAttribute="leading" secondItem="CfA-bc-588" secondAttribute="leading" id="NFE-yN-yVB"/>
                                                 <constraint firstAttribute="bottom" secondItem="j2x-Uj-Ugu" secondAttribute="bottom" id="NTp-SY-DzT"/>
+                                                <constraint firstItem="j2x-Uj-Ugu" firstAttribute="top" secondItem="SVe-ze-XDi" secondAttribute="bottom" constant="10" id="ZL6-9d-2Ii"/>
                                                 <constraint firstAttribute="trailing" secondItem="j2x-Uj-Ugu" secondAttribute="trailing" id="bJH-YB-WL2"/>
+                                                <constraint firstAttribute="trailing" secondItem="SVe-ze-XDi" secondAttribute="trailing" constant="10" id="iqt-lD-K9T"/>
+                                                <constraint firstItem="SVe-ze-XDi" firstAttribute="top" secondItem="CfA-bc-588" secondAttribute="top" constant="10" id="x2T-lB-Ybh"/>
+                                                <constraint firstItem="SVe-ze-XDi" firstAttribute="centerX" secondItem="CfA-bc-588" secondAttribute="centerX" id="yZY-bM-wjK"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <size key="customSize" width="128" height="128"/>
                                         <connections>
+                                            <outlet property="pokemonImage" destination="SVe-ze-XDi" id="Vb3-U1-cLT"/>
                                             <outlet property="pokemonNameLabel" destination="j2x-Uj-Ugu" id="Z6O-Ev-kcn"/>
                                         </connections>
                                     </collectionViewCell>

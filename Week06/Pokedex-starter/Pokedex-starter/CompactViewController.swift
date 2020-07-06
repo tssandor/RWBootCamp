@@ -50,7 +50,7 @@ class CompactViewController: UIViewController {
   func configureLayout() -> UICollectionViewCompositionalLayout {
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.33), heightDimension: .fractionalHeight(1.0))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+    item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
     
     let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.33))
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
@@ -62,7 +62,6 @@ class CompactViewController: UIViewController {
   
   func setupPokemonData() {
     let pokemons = PokemonGenerator.shared.generatePokemons()
-    print(pokemons)
     
     dataSource = UICollectionViewDiffableDataSource<Section, Int>(collectionView: compactCollectionView) { (collectionView, indexPath, number) -> UICollectionViewCell? in
       
@@ -71,13 +70,14 @@ class CompactViewController: UIViewController {
       }
       
       cell.pokemonNameLabel.text = pokemons[indexPath.row].pokemonName
+      cell.pokemonImage.image = UIImage(named: String(indexPath.row + 1))
       
       return cell
     }
     
     var initialSnapshot = NSDiffableDataSourceSnapshot<Section, Int>()
     initialSnapshot.appendSections([.main])
-    initialSnapshot.appendItems(Array(1...100))
+    initialSnapshot.appendItems(Array(1...pokemons.count))
     
     dataSource.apply(initialSnapshot, animatingDifferences: false)
     

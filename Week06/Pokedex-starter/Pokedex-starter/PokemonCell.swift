@@ -34,5 +34,6 @@ import UIKit
 
 class PokemonCell: UICollectionViewCell {
   @IBOutlet weak var pokemonNameLabel: UILabel!
+  @IBOutlet weak var pokemonImage: UIImageView!
   
 }
