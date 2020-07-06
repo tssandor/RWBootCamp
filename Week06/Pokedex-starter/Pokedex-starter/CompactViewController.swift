@@ -74,7 +74,7 @@ class CompactViewController: UIViewController {
       }
       
       cell.pokemonNameLabel.text = pokemons[indexPath.row].pokemonName
-      cell.pokemonImage.image = UIImage(named: String(indexPath.row + 1))
+      cell.pokemonImage.image = UIImage(named: "\(pokemons[indexPath.row].pokemonID)")
       
       return cell
     }
