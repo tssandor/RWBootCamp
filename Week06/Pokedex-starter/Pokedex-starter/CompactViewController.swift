@@ -34,6 +34,10 @@ import UIKit
 
 class CompactViewController: UIViewController {
   
+  // Hi Jay,
+  // This all works, but I get a lot of warnings in the console about
+  // constraints issues. I've tried to fix this but I kinda can't O_o
+  
   enum Section {
     case main
   }

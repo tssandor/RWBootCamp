@@ -89,7 +89,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="562"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E6b-72-kRu">
-                                <rect key="frame" x="0.0" y="56" width="375" height="562"/>
+                                <rect key="frame" x="8" y="64" width="359" height="546"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BAB-BR-pvH">
                                     <size key="itemSize" width="128" height="128"/>
@@ -139,17 +139,17 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="E6b-72-kRu" firstAttribute="top" secondItem="uRK-MR-EZD" secondAttribute="bottom" constant="8" id="2FH-Yk-ukn"/>
                             <constraint firstItem="juZ-AC-nhh" firstAttribute="trailing" secondItem="ezc-7R-jLs" secondAttribute="trailing" id="3fY-um-jw7"/>
+                            <constraint firstItem="E6b-72-kRu" firstAttribute="leading" secondItem="juZ-AC-nhh" secondAttribute="leading" constant="8" id="5es-Hq-AoO"/>
                             <constraint firstItem="ezc-7R-jLs" firstAttribute="leading" secondItem="juZ-AC-nhh" secondAttribute="leading" id="6ZZ-KK-9JX"/>
                             <constraint firstItem="juZ-AC-nhh" firstAttribute="trailing" secondItem="uRK-MR-EZD" secondAttribute="trailing" id="6p2-hk-mrB"/>
                             <constraint firstItem="uRK-MR-EZD" firstAttribute="leading" secondItem="juZ-AC-nhh" secondAttribute="leading" id="ETr-KJ-RPR"/>
                             <constraint firstItem="juZ-AC-nhh" firstAttribute="bottom" secondItem="ezc-7R-jLs" secondAttribute="bottom" id="Hmz-Oo-7tb"/>
-                            <constraint firstItem="E6b-72-kRu" firstAttribute="top" secondItem="uRK-MR-EZD" secondAttribute="bottom" id="I0j-Ix-cLJ"/>
-                            <constraint firstItem="E6b-72-kRu" firstAttribute="leading" secondItem="juZ-AC-nhh" secondAttribute="leading" id="WXG-9P-h4W"/>
-                            <constraint firstItem="E6b-72-kRu" firstAttribute="bottom" secondItem="juZ-AC-nhh" secondAttribute="bottom" id="asA-8G-AdS"/>
+                            <constraint firstItem="juZ-AC-nhh" firstAttribute="trailing" secondItem="E6b-72-kRu" secondAttribute="trailing" constant="8" id="IHQ-3J-zZz"/>
+                            <constraint firstItem="juZ-AC-nhh" firstAttribute="bottom" secondItem="E6b-72-kRu" secondAttribute="bottom" constant="8" id="YF7-UG-5tb"/>
                             <constraint firstItem="uRK-MR-EZD" firstAttribute="top" secondItem="juZ-AC-nhh" secondAttribute="top" id="brE-6N-XyE"/>
                             <constraint firstItem="ezc-7R-jLs" firstAttribute="top" secondItem="uRK-MR-EZD" secondAttribute="bottom" id="kEK-Ew-Wqq"/>
-                            <constraint firstItem="E6b-72-kRu" firstAttribute="trailing" secondItem="juZ-AC-nhh" secondAttribute="trailing" id="wFU-Ry-x9p"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="juZ-AC-nhh"/>
                     </view>
