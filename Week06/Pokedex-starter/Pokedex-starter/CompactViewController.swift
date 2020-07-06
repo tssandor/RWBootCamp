@@ -70,7 +70,7 @@ class CompactViewController: UIViewController {
         fatalError("Cannot create new cell")
       }
       
-//      cell.label.text = number.description
+      cell.pokemonNameLabel.text = pokemons[indexPath.row].pokemonName
       
       return cell
     }

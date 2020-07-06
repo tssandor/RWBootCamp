@@ -72,7 +72,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pokemon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mmX-yB-Csc">
-                                        <rect key="frame" x="145" y="16.5" width="85.5" height="23.5"/>
+                                        <rect key="frame" x="147" y="14" width="81" height="28"/>
                                         <fontDescription key="fontDescription" name="PokemonSolidNormal" family="Pokemon Solid" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -99,25 +99,30 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PokemonCell" id="Ni0-Ye-pY4" customClass="PokemonCell" customModule="Pokedex_starter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="34" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="CfA-bc-588" customClass="PokemonCell" customModule="Pokedex_starter" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="34" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j2x-Uj-Ugu">
-                                                    <rect key="frame" x="43" y="53.5" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j2x-Uj-Ugu">
+                                                    <rect key="frame" x="0.0" y="109" width="34" height="19"/>
+                                                    <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="16"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="j2x-Uj-Ugu" firstAttribute="centerX" secondItem="CfA-bc-588" secondAttribute="centerX" id="Thg-lf-PW4"/>
-                                                <constraint firstItem="j2x-Uj-Ugu" firstAttribute="centerY" secondItem="CfA-bc-588" secondAttribute="centerY" id="keH-Zv-t22"/>
+                                                <constraint firstItem="j2x-Uj-Ugu" firstAttribute="leading" secondItem="CfA-bc-588" secondAttribute="leading" id="NFE-yN-yVB"/>
+                                                <constraint firstAttribute="bottom" secondItem="j2x-Uj-Ugu" secondAttribute="bottom" id="NTp-SY-DzT"/>
+                                                <constraint firstAttribute="trailing" secondItem="j2x-Uj-Ugu" secondAttribute="trailing" id="bJH-YB-WL2"/>
                                             </constraints>
                                         </collectionViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="pokemonNameLabel" destination="j2x-Uj-Ugu" id="Z6O-Ev-kcn"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
