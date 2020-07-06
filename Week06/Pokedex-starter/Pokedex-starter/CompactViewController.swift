@@ -37,8 +37,10 @@ class CompactViewController: UIViewController {
   @IBOutlet weak var compactCollectionView: UICollectionView!
   
   override func viewDidLoad() {
-        super.viewDidLoad()
-
+    super.viewDidLoad()
+    let pokemons = PokemonGenerator.shared.generatePokemons()
+    print(pokemons)
+      
         // Do any additional setup after loading the view.
     }
     
