@@ -32,55 +32,6 @@
 
 import UIKit
 
-class CompactViewController: UIViewController {
-  
-  enum Section {
-    case main
-  }
-
-  @IBOutlet weak var compactCollectionView: UICollectionView!
-  var dataSource: UICollectionViewDiffableDataSource<Section, Int>!
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    compactCollectionView.collectionViewLayout = configureLayout()
-    setupPokemonData()
-  }
-
-  func configureLayout() -> UICollectionViewCompositionalLayout {
-    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.33), heightDimension: .fractionalHeight(1.0))
-    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+class PokemonCell: UICollectionViewCell {
     
-    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.33))
-    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-    
-    let section = NSCollectionLayoutSection(group: group)
-    
-    return UICollectionViewCompositionalLayout(section: section)
-  }
-  
-  func setupPokemonData() {
-    let pokemons = PokemonGenerator.shared.generatePokemons()
-    print(pokemons)
-    
-    dataSource = UICollectionViewDiffableDataSource<Section, Int>(collectionView: compactCollectionView) { (collectionView, indexPath, number) -> UICollectionViewCell? in
-      
-      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PokemonCell", for: indexPath) as? PokemonCell else {
-        fatalError("Cannot create new cell")
-      }
-      
-//      cell.label.text = number.description
-      
-      return cell
-    }
-    
-    var initialSnapshot = NSDiffableDataSourceSnapshot<Section, Int>()
-    initialSnapshot.appendSections([.main])
-    initialSnapshot.appendItems(Array(1...100))
-    
-    dataSource.apply(initialSnapshot, animatingDifferences: false)
-    
-  }
-  
 }
