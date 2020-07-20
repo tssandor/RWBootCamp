@@ -67,8 +67,9 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
     // See https://www.hackingwithswift.com/example-code/system/how-to-decode-json-from-your-app-bundle-the-easy-way
     // It adds an extension to Bundle (see the very end of this file), and makes it possible to load and decode
     // a JSON with one line.
-    
-    let sandwichesArrayFromJSONSeed = Bundle.main.decode([SandwichData].self, from: "sandwiches.json")
+ 
+    //THIS
+//    let sandwichesArrayFromJSONSeed = Bundle.main.decode([SandwichData].self, from: "sandwiches.json")
 
     // *** HOMEWORK COMMENT ***
     // While browsing the DB with an SQLite inspector I realized the DB is not cleared between app launches.
@@ -76,12 +77,12 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
     // Not very efficient :] And since we initialize the DB from a JSON, it's safe to start from scratch every time.
     // So let's clear the DB first!
     
-    let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: Sandwich.fetchRequest())
-    do {
-      try context.execute(batchDeleteRequest)
-    }  catch let error as NSError {
-      print("Issue with resetting the Core Data DB. \(error), \(error.userInfo)")
-    }
+//    let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: Sandwich.fetchRequest())
+//    do {
+//      try context.execute(batchDeleteRequest)
+//    }  catch let error as NSError {
+//      print("Issue with resetting the Core Data DB. \(error), \(error.userInfo)")
+//    }
 
     // *** HOMEWORK COMMENT ***
     // And now, let's write everything we have in the JSON to Core Data.
@@ -90,23 +91,66 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
     // 2. We clear the Core Data DB to make sure we don't end up with a bloated mess.
     // 3. We take whatever is in the JSON and write it to the DB.
     // This can be cross-checked using an SQLite browser, which I did.
-    for data in sandwichesArrayFromJSONSeed {
-      let sandwichToSave = Sandwich(entity: Sandwich.entity(), insertInto: context)
-      sandwichToSave.name = data.name
-      sandwichToSave.imageName = data.imageName
-      if data.sauceAmount == .none {
-        sandwichToSave.sauceAmount = ".none"
-      } else {
-        sandwichToSave.sauceAmount = ".tooMuch"
+    
+    //THIS
+//    for data in sandwichesArrayFromJSONSeed {
+//      addASandwichToDB(data)
+    
+    
+    
+//      let sandwichToSave = Sandwich(entity: Sandwich.entity(), insertInto: context)
+//      sandwichToSave.name = data.name
+//      sandwichToSave.imageName = data.imageName
+//      if data.sauceAmount == .none {
+//        sandwichToSave.sauceAmount = ".none"
+//      } else {
+//        sandwichToSave.sauceAmount = ".tooMuch"
+//      }
+//      appDelegate.saveContext()
+//      sandwiches.append(SandwichData(name: data.name, sauceAmount: data.sauceAmount, imageName: data.imageName))
+    //THIS
+//    }
+    
+    let request = NSFetchRequest<Sandwich>(entityName: "Sandwich")
+    let sort = NSSortDescriptor(key: "name", ascending: true)
+    request.sortDescriptors = [sort]
+
+    do {
+      let sandwichesToFetch = try appDelegate.persistentContainer.viewContext.fetch(request)
+      print(sandwichesToFetch)
+      for sandwichFromDB in sandwichesToFetch {
+        var sauceOption: SauceAmount
+        if sandwichFromDB.sauceAmount == ".none" {
+          sauceOption = .none
+        } else {
+          sauceOption = .tooMuch
+        }
+        sandwiches.append(SandwichData(name: sandwichFromDB.name!, sauceAmount: sauceOption, imageName: sandwichFromDB.imageName!))
       }
-      appDelegate.saveContext()
-      sandwiches.append(SandwichData(name: data.name, sauceAmount: data.sauceAmount, imageName: data.imageName))
+    } catch {
+        print("Fetch failed")
     }
   }
 
   func saveSandwich(_ sandwich: SandwichData) {
-    sandwiches.append(sandwich)
+    addASandwichToDB(sandwich)
+    // THIS IS THE LOCAL DB
+//    sandwiches.append(sandwich)
     tableView.reloadData()
+  }
+  
+  func addASandwichToDB(_ data: SandwichData) {
+    let sandwichToSave = Sandwich(entity: Sandwich.entity(), insertInto: context)
+    sandwichToSave.name = data.name
+    sandwichToSave.imageName = data.imageName
+    if data.sauceAmount == .none {
+      sandwichToSave.sauceAmount = ".none"
+    } else {
+      sandwichToSave.sauceAmount = ".tooMuch"
+    }
+    appDelegate.saveContext()
+    // THIS IS THE LOCAL DB
+    sandwiches.append(SandwichData(name: data.name, sauceAmount: data.sauceAmount, imageName: data.imageName))
   }
 
   @objc
@@ -131,7 +175,6 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
           .contains(searchText.lowercased())
       }
     }
-    
     tableView.reloadData()
   }
   
