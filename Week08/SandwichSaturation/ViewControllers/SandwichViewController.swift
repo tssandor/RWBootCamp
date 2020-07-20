@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 protocol SandwichDataSource {
   func saveSandwich(_: SandwichData)
@@ -17,6 +18,9 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
   var sandwiches = [SandwichData]()
   var filteredSandwiches = [SandwichData]()
   let defaults = UserDefaults.standard
+  
+  private let appDelegate = UIApplication.shared.delegate as! AppDelegate
+  private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
@@ -64,8 +68,40 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
     // It adds an extension to Bundle (see the very end of this file), and makes it possible to load and decode
     // a JSON with one line.
     
-    let sandwichesJSON = Bundle.main.decode([SandwichData].self, from: "sandwiches.json")
-    sandwiches.append(contentsOf: sandwichesJSON)
+    let sandwichesArrayFromJSONSeed = Bundle.main.decode([SandwichData].self, from: "sandwiches.json")
+
+    // *** HOMEWORK COMMENT ***
+    // While browsing the DB with an SQLite inspector I realized the DB is not cleared between app launches.
+    // So if we start the app 100 times we will have 1000 sandwiches in the DB!
+    // Not very efficient :] And since we initialize the DB from a JSON, it's safe to start from scratch every time.
+    // So let's clear the DB first!
+    
+    let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: Sandwich.fetchRequest())
+    do {
+      try context.execute(batchDeleteRequest)
+    }  catch let error as NSError {
+      print("Issue with resetting the Core Data DB. \(error), \(error.userInfo)")
+    }
+
+    // *** HOMEWORK COMMENT ***
+    // And now, let's write everything we have in the JSON to Core Data.
+    // After this runs, the app works as expected:
+    // 1. We parse the JSON
+    // 2. We clear the Core Data DB to make sure we don't end up with a bloated mess.
+    // 3. We take whatever is in the JSON and write it to the DB.
+    // This can be cross-checked using an SQLite browser, which I did.
+    for data in sandwichesArrayFromJSONSeed {
+      let sandwichToSave = Sandwich(entity: Sandwich.entity(), insertInto: context)
+      sandwichToSave.name = data.name
+      sandwichToSave.imageName = data.imageName
+      if data.sauceAmount == .none {
+        sandwichToSave.sauceAmount = ".none"
+      } else {
+        sandwichToSave.sauceAmount = ".tooMuch"
+      }
+      appDelegate.saveContext()
+      sandwiches.append(SandwichData(name: data.name, sauceAmount: data.sauceAmount, imageName: data.imageName))
+    }
   }
 
   func saveSandwich(_ sandwich: SandwichData) {
