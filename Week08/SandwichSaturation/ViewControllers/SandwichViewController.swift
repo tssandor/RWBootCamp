@@ -39,6 +39,7 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
     searchController.searchBar.scopeButtonTitles = SauceAmount.allCases.map { $0.rawValue }
     searchController.searchBar.delegate = self
     
+    // *** HOMEWORK COMMENT ***
     // We initialize the searchbar scope from user defaults.
     // If it doesn't exist, the fallback default value is 0, which is exactly what we need.
     searchController.searchBar.selectedScopeButtonIndex = defaults.integer(forKey: "selectedScope")
@@ -50,11 +51,13 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
   
   func loadSandwiches() {
     
+    // *** HOMEWORK COMMENT ***
     // WHY DISTRIBUTE SEED DATA LIKE THIS?
     // The best answer is probably that seed data can change between app versions.
     // So in real like, you'd want to load a JSON from a remote server (so not bundled with the app).
     // This way you can always supply the app with the most up-to-date seed.
     
+    // *** HOMEWORK COMMENT ***
     // ALSO, WHAT'S HAPPENING HERE?
     // I decided to take a slightly easier approach and used Hacking with Swift's general JSON decoder extension
     // See https://www.hackingwithswift.com/example-code/system/how-to-decode-json-from-your-app-bundle-the-easy-way
@@ -143,8 +146,11 @@ extension SandwichViewController: UISearchResultsUpdating {
 extension SandwichViewController: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar,
       selectedScopeButtonIndexDidChange selectedScope: Int) {
+    
+    // *** HOMEWORK COMMENT ***
+    // We store the current scope to User Defaults so it persists
     defaults.set(selectedScope, forKey: "selectedScope")
-    print(defaults.integer(forKey: "selectedScope"))
+    
     let sauceAmount = SauceAmount(rawValue: searchBar.scopeButtonTitles![selectedScope])
     filterContentForSearchText(searchBar.text!, sauceAmount: sauceAmount)
   }
