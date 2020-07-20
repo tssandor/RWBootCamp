@@ -14,6 +14,7 @@ protocol SandwichDataSource {
 }
 
 class SandwichViewController: UITableViewController, SandwichDataSource {
+    
   let searchController = UISearchController(searchResultsController: nil)
   var sandwiches = [SandwichData]()
   var filteredSandwiches = [SandwichData]()
@@ -25,7 +26,7 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
   required init?(coder: NSCoder) {
     super.init(coder: coder)
     
-    loadSandwiches()
+    loadSandwichesFromCoreData()
   }
   
   override func viewDidLoad() {
@@ -33,7 +34,10 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
         
     let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentAddView(_:)))
     navigationItem.rightBarButtonItem = addButton
-    
+//    
+//    let addResetButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(presentAddView(_:)))
+//    navigationItem.leftBarButtonItem = addResetButton
+
     // Setup Search Controller
     searchController.searchResultsUpdater = self
     searchController.obscuresBackgroundDuringPresentation = false
@@ -53,71 +57,29 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
     super.viewWillAppear(animated)
   }
   
-  func loadSandwiches() {
-    
+  func loadSandwichesFromCoreData() {
     // *** HOMEWORK COMMENT ***
-    // WHY DISTRIBUTE SEED DATA LIKE THIS?
-    // The best answer is probably that seed data can change between app versions.
+    // Here's my thought process:
+    // We will load the sandwiches from the Core Data DB, but if there's no such DB (first run?),
+    // we need to seed the DB from the JSON.
+    // I've also added a refresh button to the navbar that helps with testing, as it manually
+    // clears the Core Data DB and repopulates it from the JSON.
+    // Repopulating from JSON is helpful, as seed data can change between app versions.
     // So in real like, you'd want to load a JSON from a remote server (so not bundled with the app).
     // This way you can always supply the app with the most up-to-date seed.
-    
-    // *** HOMEWORK COMMENT ***
-    // ALSO, WHAT'S HAPPENING HERE?
-    // I decided to take a slightly easier approach and used Hacking with Swift's general JSON decoder extension
-    // See https://www.hackingwithswift.com/example-code/system/how-to-decode-json-from-your-app-bundle-the-easy-way
-    // It adds an extension to Bundle (see the very end of this file), and makes it possible to load and decode
-    // a JSON with one line.
- 
-    //THIS
-//    let sandwichesArrayFromJSONSeed = Bundle.main.decode([SandwichData].self, from: "sandwiches.json")
-
-    // *** HOMEWORK COMMENT ***
-    // While browsing the DB with an SQLite inspector I realized the DB is not cleared between app launches.
-    // So if we start the app 100 times we will have 1000 sandwiches in the DB!
-    // Not very efficient :] And since we initialize the DB from a JSON, it's safe to start from scratch every time.
-    // So let's clear the DB first!
-    
-//    let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: Sandwich.fetchRequest())
-//    do {
-//      try context.execute(batchDeleteRequest)
-//    }  catch let error as NSError {
-//      print("Issue with resetting the Core Data DB. \(error), \(error.userInfo)")
-//    }
-
-    // *** HOMEWORK COMMENT ***
-    // And now, let's write everything we have in the JSON to Core Data.
-    // After this runs, the app works as expected:
-    // 1. We parse the JSON
-    // 2. We clear the Core Data DB to make sure we don't end up with a bloated mess.
-    // 3. We take whatever is in the JSON and write it to the DB.
-    // This can be cross-checked using an SQLite browser, which I did.
-    
-    //THIS
-//    for data in sandwichesArrayFromJSONSeed {
-//      addASandwichToDB(data)
-    
-    
-    
-//      let sandwichToSave = Sandwich(entity: Sandwich.entity(), insertInto: context)
-//      sandwichToSave.name = data.name
-//      sandwichToSave.imageName = data.imageName
-//      if data.sauceAmount == .none {
-//        sandwichToSave.sauceAmount = ".none"
-//      } else {
-//        sandwichToSave.sauceAmount = ".tooMuch"
-//      }
-//      appDelegate.saveContext()
-//      sandwiches.append(SandwichData(name: data.name, sauceAmount: data.sauceAmount, imageName: data.imageName))
-    //THIS
-//    }
-    
     let request = NSFetchRequest<Sandwich>(entityName: "Sandwich")
     let sort = NSSortDescriptor(key: "name", ascending: true)
     request.sortDescriptors = [sort]
 
     do {
       let sandwichesToFetch = try appDelegate.persistentContainer.viewContext.fetch(request)
-      print(sandwichesToFetch)
+      if sandwichesToFetch.count == 0 {
+        print("There's no DB! Need to parse the JSON for seed data")
+        // *** HOMEWORK COMMENT ***
+        // If this is the first run, or if the SQL file has been deleted, there's no data to fetch.
+        // We need to reinitialized the DB form the JSON seed!
+        reinitializeTheDatabaseFromJSONSeed()
+      }
       for sandwichFromDB in sandwichesToFetch {
         var sauceOption: SauceAmount
         if sandwichFromDB.sauceAmount == ".none" {
@@ -131,11 +93,38 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
         print("Fetch failed")
     }
   }
+  
+  func reinitializeTheDatabaseFromJSONSeed() {
+    // *** HOMEWORK COMMENT ***
+    // We are about to do a few things here....
+    // First, We are going to clear whatever is in the local database
+    //
+    
+    print("Reinitializing the DB from the JSON seed......")
+    
+    let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: Sandwich.fetchRequest())
+    do {
+      try context.execute(batchDeleteRequest)
+    }  catch let error as NSError {
+      print("Issue with resetting the Core Data DB. \(error), \(error.userInfo)")
+    }
+    
+    // *** HOMEWORK COMMENT ***
+    // Then we will re-initialize the DB with content from the JSON
+    // I decided to take a slightly easier approach and used Hacking with Swift's general JSON decoder extension
+    // See https://www.hackingwithswift.com/example-code/system/how-to-decode-json-from-your-app-bundle-the-easy-way
+    // It adds an extension to Bundle (see the very end of this file), and makes it possible to load and decode
+    // a JSON with one line.
+    let sandwichesArrayFromJSONSeed = Bundle.main.decode([SandwichData].self, from: "sandwiches.json")
+    sandwiches = [SandwichData]()
+    filteredSandwiches = [SandwichData]()
+    for data in sandwichesArrayFromJSONSeed {
+      addASandwichToDB(data)
+    }
+  }
 
   func saveSandwich(_ sandwich: SandwichData) {
     addASandwichToDB(sandwich)
-    // THIS IS THE LOCAL DB
-//    sandwiches.append(sandwich)
     tableView.reloadData()
   }
   
@@ -149,7 +138,7 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
       sandwichToSave.sauceAmount = ".tooMuch"
     }
     appDelegate.saveContext()
-    // THIS IS THE LOCAL DB
+    // Actually, this is not the nicest (to add it to the local DB here) but it does the job
     sandwiches.append(SandwichData(name: data.name, sauceAmount: data.sauceAmount, imageName: data.imageName))
   }
 
@@ -175,6 +164,11 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
           .contains(searchText.lowercased())
       }
     }
+    tableView.reloadData()
+  }
+  
+  @IBAction func refreshButtonPressed(_ sender: Any) {
+    reinitializeTheDatabaseFromJSONSeed()
     tableView.reloadData()
   }
   
