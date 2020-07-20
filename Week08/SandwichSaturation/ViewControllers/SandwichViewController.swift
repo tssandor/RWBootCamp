@@ -16,6 +16,7 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
   let searchController = UISearchController(searchResultsController: nil)
   var sandwiches = [SandwichData]()
   var filteredSandwiches = [SandwichData]()
+  let defaults = UserDefaults.standard
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
@@ -37,6 +38,10 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
     definesPresentationContext = true
     searchController.searchBar.scopeButtonTitles = SauceAmount.allCases.map { $0.rawValue }
     searchController.searchBar.delegate = self
+    
+    // We initialize the searchbar scope from user defaults.
+    // If it doesn't exist, the fallback default value is 0, which is exactly what we need.
+    searchController.searchBar.selectedScopeButtonIndex = defaults.integer(forKey: "selectedScope")
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -135,8 +140,9 @@ extension SandwichViewController: UISearchResultsUpdating {
 extension SandwichViewController: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar,
       selectedScopeButtonIndexDidChange selectedScope: Int) {
-    let sauceAmount = SauceAmount(rawValue:
-      searchBar.scopeButtonTitles![selectedScope])
+    defaults.set(selectedScope, forKey: "selectedScope")
+    print(defaults.integer(forKey: "selectedScope"))
+    let sauceAmount = SauceAmount(rawValue: searchBar.scopeButtonTitles![selectedScope])
     filterContentForSearchText(searchBar.text!, sauceAmount: sauceAmount)
   }
 }
