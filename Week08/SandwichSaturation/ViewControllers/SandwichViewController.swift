@@ -49,17 +49,20 @@ class SandwichViewController: UITableViewController, SandwichDataSource {
   }
   
   func loadSandwiches() {
-    let sandwichArray = [SandwichData(name: "Bagel Toast", sauceAmount: .none, imageName: "sandwich1"),
-                         SandwichData(name: "Bologna", sauceAmount: .none, imageName: "sandwich2"),
-                         SandwichData(name: "Breakfast Roll", sauceAmount: .none, imageName: "sandwich3"),
-                         SandwichData(name: "Club", sauceAmount: .none, imageName: "sandwich4"),
-                         SandwichData(name: "Sub", sauceAmount: .none, imageName: "sandwich5"),
-                         SandwichData(name: "Steak", sauceAmount: .tooMuch, imageName: "sandwich6"),
-                         SandwichData(name: "Dunno", sauceAmount: .tooMuch, imageName: "sandwich7"),
-                         SandwichData(name: "Torta", sauceAmount: .tooMuch, imageName: "sandwich8"),
-                         SandwichData(name: "Ham", sauceAmount: .tooMuch, imageName: "sandwich9"),
-                         SandwichData(name: "Lettuce", sauceAmount: .tooMuch, imageName: "sandwich10")]
-    sandwiches.append(contentsOf: sandwichArray)
+    
+    // WHY DISTRIBUTE SEED DATA LIKE THIS?
+    // The best answer is probably that seed data can change between app versions.
+    // So in real like, you'd want to load a JSON from a remote server (so not bundled with the app).
+    // This way you can always supply the app with the most up-to-date seed.
+    
+    // ALSO, WHAT'S HAPPENING HERE?
+    // I decided to take a slightly easier approach and used Hacking with Swift's general JSON decoder extension
+    // See https://www.hackingwithswift.com/example-code/system/how-to-decode-json-from-your-app-bundle-the-easy-way
+    // It adds an extension to Bundle (see the very end of this file), and makes it possible to load and decode
+    // a JSON with one line.
+    
+    let sandwichesJSON = Bundle.main.decode([SandwichData].self, from: "sandwiches.json")
+    sandwiches.append(contentsOf: sandwichesJSON)
   }
 
   func saveSandwich(_ sandwich: SandwichData) {
@@ -147,3 +150,33 @@ extension SandwichViewController: UISearchBarDelegate {
   }
 }
 
+// Bundle extension from Hacking with Swift
+extension Bundle {
+    func decode<T: Decodable>(_ type: T.Type, from file: String, dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate, keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) -> T {
+        guard let url = self.url(forResource: file, withExtension: nil) else {
+            fatalError("Failed to locate \(file) in bundle.")
+        }
+
+        guard let data = try? Data(contentsOf: url) else {
+            fatalError("Failed to load \(file) from bundle.")
+        }
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = dateDecodingStrategy
+        decoder.keyDecodingStrategy = keyDecodingStrategy
+
+        do {
+            return try decoder.decode(T.self, from: data)
+        } catch DecodingError.keyNotFound(let key, let context) {
+            fatalError("Failed to decode \(file) from bundle due to missing key '\(key.stringValue)' not found – \(context.debugDescription)")
+        } catch DecodingError.typeMismatch(_, let context) {
+            fatalError("Failed to decode \(file) from bundle due to type mismatch – \(context.debugDescription)")
+        } catch DecodingError.valueNotFound(let type, let context) {
+            fatalError("Failed to decode \(file) from bundle due to missing \(type) value – \(context.debugDescription)")
+        } catch DecodingError.dataCorrupted(_) {
+            fatalError("Failed to decode \(file) from bundle because it appears to be invalid JSON")
+        } catch {
+            fatalError("Failed to decode \(file) from bundle: \(error.localizedDescription)")
+        }
+    }
+}
