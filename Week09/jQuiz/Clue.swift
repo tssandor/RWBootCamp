@@ -30,15 +30,45 @@ import Foundation
 //  }
 //}
 
+struct ClueResponse: Codable {
+  var results: [Clue]
+}
+
 struct Clue: Codable {
   let id: Int
   let answer: String
   let question: String
-  let category_id: Int
+  let categoryID: Int
   let category: Category
+
+  enum CodingKeys: String, CodingKey {
+      case id, answer, question
+      case categoryID = "category_id"
+      case category
+  }
 }
 
 struct Category: Codable {
-  let id: Int
-  let title: String
+    let id: Int
+    let title: String
+    let cluesCount: Int
+
+    enum CodingKeys: String, CodingKey {
+        case id, title
+        case cluesCount = "clues_count"
+    }
 }
+//
+//
+//struct Clue: Codable {
+//  let id: Int
+//  let answer: String
+//  let question: String
+//  let category_id: Int
+//  let category: Category
+//}
+//
+//struct Category: Codable {
+//  let id: Int
+//  let title: String
+//}
