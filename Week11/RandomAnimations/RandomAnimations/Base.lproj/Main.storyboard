@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="RandomAnimations" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lPm-57-Cp8">
+                                <rect key="frame" x="0.0" y="44" width="414" height="669"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s7m-3S-wce">
+                                        <rect key="frame" x="152" y="222" width="111" height="111"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="merge" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CLO-m3-2ct">
+                                <rect key="frame" x="175" y="653" width="64" height="64"/>
+                                <state key="normal" image="merge"/>
+                                <connections>
+                                    <action selector="pressedRotate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FWc-XD-Xoy"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="github" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGO-7y-ksq">
+                                <rect key="frame" x="268" y="748" width="64" height="64"/>
+                                <state key="normal" image="github"/>
+                                <connections>
+                                    <action selector="pressedScaleRectangle:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WYv-te-MRZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="mobile" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N1b-O7-LuJ">
+                                <rect key="frame" x="78" y="745" width="64" height="65"/>
+                                <state key="normal" image="mobile"/>
+                                <connections>
+                                    <action selector="pressedMoveRectangle:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FZX-co-cBL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="play" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m2M-eA-MBM">
+                                <rect key="frame" x="175" y="747" width="64" height="64"/>
+                                <state key="normal" image="play"/>
+                                <connections>
+                                    <action selector="pressedPlay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hhm-6k-U2c"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="m2M-eA-MBM" secondAttribute="bottom" constant="51" id="2ad-nz-i3d"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="WGO-7y-ksq" secondAttribute="bottom" constant="50" id="5Nz-6d-qw0"/>
+                            <constraint firstItem="lPm-57-Cp8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="6Uu-wu-RGe"/>
+                            <constraint firstItem="N1b-O7-LuJ" firstAttribute="top" secondItem="lPm-57-Cp8" secondAttribute="bottom" constant="32" id="Arl-Wa-isy"/>
+                            <constraint firstItem="WGO-7y-ksq" firstAttribute="top" secondItem="lPm-57-Cp8" secondAttribute="bottom" constant="35" id="Fd9-Ff-FPe"/>
+                            <constraint firstItem="lPm-57-Cp8" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="FdG-Gj-wxw"/>
+                            <constraint firstItem="CLO-m3-2ct" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="I23-o2-fgD"/>
+                            <constraint firstItem="WGO-7y-ksq" firstAttribute="leading" secondItem="m2M-eA-MBM" secondAttribute="trailing" constant="29" id="MRh-aE-W1L"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="N1b-O7-LuJ" secondAttribute="bottom" constant="52" id="cNt-4v-xDt"/>
+                            <constraint firstItem="m2M-eA-MBM" firstAttribute="top" secondItem="CLO-m3-2ct" secondAttribute="bottom" constant="30" id="lHe-xd-tj6"/>
+                            <constraint firstItem="m2M-eA-MBM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qT4-aA-vNT"/>
+                            <constraint firstItem="lPm-57-Cp8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="s91-lG-ebL"/>
+                            <constraint firstItem="m2M-eA-MBM" firstAttribute="leading" secondItem="N1b-O7-LuJ" secondAttribute="trailing" constant="33" id="xLK-U8-JWt"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="animatedRectangle" destination="s7m-3S-wce" id="tdN-Wo-pod"/>
+                        <outlet property="buttonOnLeftConstraint" destination="xLK-U8-JWt" id="9Xh-yQ-3Pu"/>
+                        <outlet property="buttonOnRightConstraint" destination="MRh-aE-W1L" id="tX4-0s-IzF"/>
+                        <outlet property="buttonOnTopConstraint" destination="lHe-xd-tj6" id="oT5-rW-cJJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="131.8840579710145" y="138.61607142857142"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="github" width="64" height="64"/>
+        <image name="merge" width="64" height="64"/>
+        <image name="mobile" width="64" height="64"/>
+        <image name="play" width="64" height="64"/>
+    </resources>
+</document>
